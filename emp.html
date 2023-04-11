@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Payroll Service Test</title>
+</head>
+<body>
+    <h1>Employee Payroll Service Test</h1>
+    <div id="output"></div>
+    <script>
+        
+        fetch('http://localhost:3000/employee-payroll')
+            .then(response => response.json())
+            .then(data => {
+                
+                const outputDiv = document.getElementById('output');
+                outputDiv.innerHTML = JSON.stringify(data);
+
+                
+                const payrollPromise = new Promise(resolve => {
+                    let totalPayroll = 0;
+                    for (let i = 0; i < data.length; i++) {
+                        totalPayroll += data[i].salary;
+                    }
+                    resolve(totalPayroll);
+                });
+                payrollPromise.then(totalPayroll => {
+                    console.log(`Total Payroll: $${totalPayroll}`);
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+</body>
+</html>
